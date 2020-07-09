@@ -2,153 +2,155 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 public class Main {
-	static java.util.Scanner in = null;
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		in = new java.util.Scanner(System.in);
-		String passwd="";
-		String inputpass ="";
-		int no;
-		System.out.print("»ç¿ëÀÚ ¸ðµå => 1 , °ü¸®ÀÚ ¸ðµå => 2 : ");
-		no =in.nextInt();
-		if (no == 1) {
-			while (UserMenu())
-				;
-		} else if (no == 2) {
-			// °ü¸®ÀÚ ·Î±×ÀÎ			
-			try {			
-				inputpass=javax.swing.JOptionPane.showInputDialog("°ü¸®ÀÚ ºñ¹Ð¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
-				BufferedReader fin = null;
-				fin = new BufferedReader(new FileReader("passwd.txt"));	
-				String tmp="";
-				while ((tmp = fin.readLine()) != null) {
-					passwd=tmp;
-					//System.out.println(passwd);
-				}
-				fin.close();
-				
-				if(passwd.compareTo(inputpass) == 0){			
-					while (AdminMenu())
-						;
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "°ü¸®ÀÚ¸ðµå ·Î±×ÀÎ ½ÇÆÐ", "·Î±×ÀÎ ½ÇÆÐ", JOptionPane.ERROR_MESSAGE);
-					
-				}
-				
-			} catch (FileNotFoundException e) {
-				e.getStackTrace();
-			} catch (IOException e) {
-				e.getStackTrace();
-			}
-			
-		}
+    static Scanner input = null;
 
-		in.close();
+    public static void main(String[] args) {
 
-	}
+        input = new java.util.Scanner(System.in);
+        String passwd = "";
+        String inputpass = "";
+        int no;
+        System.out.print("ì‚¬ìš©ìž ëª¨ë“œ => 1 , ê´€ë¦¬ìž ëª¨ë“œ => 2 : ");
+        no = input.nextInt();
 
-	static boolean UserMenu() {
-		int menu_no;
-		boolean ret = true;
+        if (no == 1) {
+            while (UserMenu())
+                ;
+        } else if (no == 2) {
+            // ê´€ë¦¬ìž ë¡œê·¸ì¸
+            try {
+                System.out.print("ê´€ë¦¬ìž ë¹„ë°€ë²ˆí˜¸ë¥¼ ìž…ë ¥í•˜ì„¸ìš” : ");
+                inputpass = input.next();
+                BufferedReader fin = null;
+                fin = new BufferedReader(new FileReader("passwd.txt"));
+                String tmp = "";
+                while ((tmp = fin.readLine()) != null) {
+                    passwd = tmp;
+                    //System.out.println(passwd);
+                }
+                fin.close();
 
-		in = new java.util.Scanner(System.in);
+                if (passwd.compareTo(inputpass) == 0) {
+                    while (AdminMenu())
+                        ;
+                } else {
+                    System.out.println("ê´€ë¦¬ìžëª¨ë“œ ë¡œê·¸ì¸ ì‹¤íŒ¨");
+                }
 
-		System.out.println("*******************");
-		System.out.println("     1. µµ¼­    Á¶È¸          ");
-		System.out.println("     2. ´ë          Ãâ          ");
-		System.out.println("     3. ¹Ý          ³³          ");
-		System.out.println("     4. ¿¹          ¾à          ");
-		System.out.println("     5. ÀÌ¿ëÀÚ Á¤º¸          ");
-		System.out.println("     6. Á¾          ·á          ");
-		System.out.println("*******************");
-		System.out.print("input menu number : ");
-		menu_no = in.nextInt();
+            } catch (FileNotFoundException e) {
+                e.getStackTrace();
+            } catch (IOException e) {
+                e.getStackTrace();
+            }
+        }
+        input.close();
+    }
 
-		User user = new User();
-		Book book = new Book();
+    static boolean UserMenu() {
+        int menu_no;
+        boolean ret = true;
 
-		if (menu_no == 6) {
-			ret = false;
-		} else {
-			if (menu_no >= 1 && menu_no <= 5)
-				switch (menu_no) {
-				case 1:
-					book.showList(false);
-					break;
-				case 2:
-					user.UserRental();
-					break;
-				case 3:
-					user.UserTurnIn();
-					break;
-				case 4:
-					user.UserReserve();
-					break;
-				case 5:
-					user.UserInfo();
-					break;
-				}
-			else
-				System.out.println("¸Þ´º ¹øÈ£¸¦ ´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä");
-			ret = true;
-		}
+        input = new Scanner(System.in);
 
-		return ret;
-	}
+        System.out.println("*******************");
+        System.out.println("1. ë„ì„œ    ì¡°íšŒ     ");
+        System.out.println("2. ëŒ€          ì¶œ  ");
+        System.out.println("3. ë°˜          ë‚©  ");
+        System.out.println("4. ì˜ˆ          ì•½  ");
+        System.out.println("5. ì´ìš©ìž ì •ë³´      ");
+        System.out.println("6. ì¢…          ë£Œ  ");
+        System.out.println("*******************");
+        System.out.print("input menu number : ");
+        menu_no = input.nextInt();
 
-	static boolean AdminMenu() {	
-		int menu_no = 0;
-		boolean ret = true;
-		in = new java.util.Scanner(System.in);
+        UserMode userMode = new UserMode();
+        BookDataManage bookManage = new BookDataManage();
+        MemberDataManage memberManage = new MemberDataManage();
 
-		System.out.println("********************");
-		System.out.println("     1. ´ë           Ãâ          ");
-		System.out.println("     2. ¹Ý           ³³          ");
-		System.out.println("     3. ¿¹           ¾à          ");
-		System.out.println("     4. Ã¥ ¸ñ·Ï °ü¸®          ");// Ã¥ Ãß°¡ Æó±â °ü¸®
-		System.out.println("     5. ÀÌ¿ëÀÚ  °ü¸®          ");
-		System.out.println("     6. Á¾           ·á          ");
-		System.out.println("********************");
-		System.out.print("input menu number : ");
+        if (menu_no == 6) {
+            ret = false;
+        } else {
+            if (menu_no >= 1 && menu_no <= 5)
+                switch (menu_no) {
 
-		menu_no = in.nextInt();
+                    case 1:
+                        bookManage.showList(false);
+                        break;
+                    case 2:
+                        userMode.UserRental();
+                        break;
+                    case 3:
+                        userMode.UserTurnIn();
+                        break;
+                    case 4:
+                        userMode.UserReserve();
+                        break;
+                    case 5:
+                        memberManage.MemberInfo();
+                        break;
+                }
+            else
+                System.out.println("ë©”ë‰´ ë²ˆí˜¸ë¥¼ ë‹¤ì‹œ ìž…ë ¥í•˜ì„¸ìš”");
+            ret = true;
+        }
 
-		BookManage bm = new BookManage();
-		UserManage um = new UserManage();
+        return ret;
+    }
 
-		if (menu_no == 6) {
-			ret = false;
-		} else {
-			if (menu_no >= 1 && menu_no <= 5)
-				switch (menu_no) {
-				case 1:
-					um.AdminRental();
-					break;
-				case 2:
-					um.AdminTurnIn();
-					break;
-				case 3:
-					um.AdminReserve();
-					break;
-				case 4:
-					bm.AdminBookManage();
-					break;
-				case 5:
-					um.AdminUserManage();
-					break;
-				}
-			else
-				System.out.println("¸Þ´º¹øÈ£¸¦ ´Ù½Ã ÀÔ·ÂÇÏ¼¼¿ä");
-			ret = true;
-		}
+    static boolean AdminMenu() {
+        int menu_no = 0;
+        boolean ret = true;
+        input = new java.util.Scanner(System.in);
 
-		return ret;
+        System.out.println("********************");
+        System.out.println("1. ëŒ€           ì¶œ   ");
+        System.out.println("2. ë°˜           ë‚©   ");
+        System.out.println("3. ì˜ˆ           ì•½   ");
+        System.out.println("4. ì±… ëª©ë¡ ê´€ë¦¬       ");// ì±… ì¶”ê°€ íê¸° ê´€ë¦¬
+        System.out.println("5. ì´ìš©ìž  ê´€ë¦¬       ");
+        System.out.println("6. ì¢…           ë£Œ   ");
+        System.out.println("********************");
+        System.out.print("input menu number : ");
 
-	}
+        menu_no = input.nextInt();
+
+        AdminMode adminMode = new AdminMode();
+        MemberDataManage memberManage = new MemberDataManage();
+        BookDataManage bookManage = new BookDataManage();
+
+        if (menu_no == 6) {
+            ret = false;
+        } else {
+            if (menu_no >= 1 && menu_no <= 5)
+                switch (menu_no) {
+                    case 1:
+                        adminMode.AdminRental();
+                        break;
+                    case 2:
+                        adminMode.AdminTurnIn();
+                        break;
+                    case 3:
+                        adminMode.AdminReserve();
+                        break;
+                    case 4:
+                        bookManage.AdminBookManage();
+                        break;
+                    case 5:
+                        memberManage.AdminUserManage();
+                        break;
+                }
+            else
+                System.out.println("ë©”ë‰´ë²ˆí˜¸ë¥¼ ë‹¤ì‹œ ìž…ë ¥í•˜ì„¸ìš”");
+            ret = true;
+        }
+        return ret;
+    }
+
 
 }
+

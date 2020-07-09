@@ -1,157 +1,39 @@
-import java.io.*;
 public class Book {
-	String book_fn = "book.bin";
-	static java.util.Scanner in = null;
-	final int recordSize = 51;
-	String index = "";
-	String name, borrowinfo, reserveinfo;
-	boolean success = false;
-	int lentcount = 0;
-	String lentstr="";
-	// index=5, bookname=20, ¥Î√‚(¥Î√‚¿⁄, π›≥≥¿œ)=16, øπæ‡=10
 
-	void showList(boolean ad) {
+    private String name, borrowInfo, reserveInfo;
+    private int lentCount = 0;
 
-		
-		if (ad == false) {
-			System.out.println("< µµº≠ ∏Ò∑œ >");
-			System.out.println("==================================================");
-			System.out.println("¿Œµ¶Ω∫   ¡¶∏Ò                                             ¥Î√‚¡§∫∏                øπæ‡¡§∫∏         ");
-			System.out.println("==================================================");
-			fileRead("list");
-		}
-		else if (ad == true) {
-			System.out.println("< µµº≠ ∏Ò∑œ >");
-			System.out.println("=========================================================");
-			System.out.println("¿Œµ¶Ω∫   ¡¶∏Ò                                             ¥Î√‚¡§∫∏                                øπæ‡¡§∫∏         ");
-			System.out.println("=========================================================");
-			fileRead("adminlist");
-		}
-		System.out.println("");
-		int search_no;
-		System.out.print("¡¶∏Ò¿∏∑Œ ∞Àªˆ«œ±‚ => 1 ∞Àªˆ æ»«‘ => 2 : ");
-		in = new java.util.Scanner(System.in);
-		search_no = in.nextInt();
-		if(search_no==1) {
-			Search();
-		}
-		else 
-			return ;
-	}
+    // index=5, bookname=20, ÎåÄÏ∂ú(ÎåÄÏ∂úÏûê, Î∞òÎÇ©Ïùº)=16, ÏòàÏïΩ=10
 
-	void Search() {
-		int len = 0;
-		System.out.print("µµº≠ ¡¶∏Ò¿ª ¿‘∑¬«œººø‰ : ");
-		in = new java.util.Scanner(System.in);
-		name = in.nextLine();
-		
-		len = name.length();
-		for (int i = len; i < 20; i++) {
-			name = name + " ";
-		}
-		
-		fileRead("conname");
-		if (success == true) {
-			bookinfo();
-		}
-	}
-	
-	void Confirm(boolean print) {
-		int len = 0;
-		System.out.print("µµº≠ index∏¶ ¿‘∑¬«œººø‰ : ");
-		in = new java.util.Scanner(System.in);
-		index = in.nextLine();
-		len = index.length();
-		for (int i = len; i < 5; i++) {
-			index = index + " ";
-		}
+    public String getName() {
+        return name;
+    }
 
-		fileRead("conindex");
+    public void setName(String name) {
+        this.name = name;
+    }
 
-		if (print == true && success == true) {
-			bookinfo();
-		}
+    public String getBorrowInfo() {
+        return borrowInfo;
+    }
 
-	}
+    public void setBorrowInfo(String borrowInfo) {
+        this.borrowInfo = borrowInfo;
+    }
 
-	void bookinfo() {
-		System.out.println("µµº≠ ¡¶∏Ò : " + name);
-		System.out.println("¥Î√‚ªÛ≈¬ : " + borrowinfo.substring(8));
-		System.out.println("øπæ‡ªÛ≈¬ : " + reserveinfo);
-	}
+    public String getReserveInfo() {
+        return reserveInfo;
+    }
 
-	void fileRead(String option) {
-		try {
-			BufferedReader fin = null;
-			fin = new BufferedReader(new FileReader(book_fn));
-			String line = "";
-			String allLine;
-			// index=5, bookname=20, ¥Î√‚(¥Î√‚¿⁄, π›≥≥¿œ)=16, øπæ‡=10
+    public void setReserveInfo(String reserveInfo) {
+        this.reserveInfo = reserveInfo;
+    }
 
-			while ((allLine = fin.readLine()) != null) {
-				for (int i = 0; i < allLine.length(); i += recordSize) {
-					line = allLine.substring(i, i + recordSize);
-					
-					switch (option) {
+    public int getLentCount() {
+        return lentCount;
+    }
 
-					case "list":
-						System.out.println(line.substring(0, 5) + " " + line.substring(5, 25) + " "
-								+ line.substring(33, 41) + "       " + line.substring(41, 51));
-						break;
-
-					case "adminlist":
-						System.out.println(line.substring(0, 5) + " " + line.substring(5, 25) + " "
-								+ line.substring(25, 41) + "       " + line.substring(41, 51));
-						break;
-						// index=5, bookname=20, ¥Î√‚(¥Î√‚¿⁄, π›≥≥¿œ)=16, øπæ‡=10
-					case "conindex":						
-						if (index.compareTo(line.substring(0, 5)) == 0) {
-							index = line.substring(0, 5);
-							name = line.substring(5, 25);
-							borrowinfo = line.substring(25, 41);	
-							reserveinfo = line.substring(41, 51);
-							success = true;
-							break;
-						}
-						break;
-						
-					case "conname":
-						if (name.compareTo(line.substring(5, 25)) == 0) {
-							index = line.substring(0, 5);
-							name = line.substring(5, 25);
-							borrowinfo = line.substring(25, 41);
-							reserveinfo = line.substring(41, 51);
-							success = true;
-							break;
-						}
-						break;
-					}
-
-					// ∆Ø¡§ id √£±‚
-					if (option.substring(0, 4).compareTo("lent") == 0) {
-						if (option.substring(4, 12).compareTo(line.substring(25, 33)) == 0) {
-							lentcount++;
-						}
-					}
-					if(option.length()>=8) { //¥Î√‚¡ﬂ¿Œ √• ∏Ò∑œ √‚∑¬
-						if (option.substring(0, 8).compareTo("lentbook") == 0) {
-							if (option.substring(8, 16).compareTo(line.substring(25, 33)) == 0) {
-								System.out.println(
-										line.substring(0, 5) + " " + line.substring(5, 25) + " " + line.substring(33, 41));
-								lentstr+=line.substring(0, 5);
-							}
-						}
-					}					
-				}
-			}
-
-			fin.close();
-
-		} catch (FileNotFoundException e) {
-			System.out.println(e);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-	}
-
+    public void setLentCount(int lentCount) {
+        this.lentCount = lentCount;
+    }
 }
